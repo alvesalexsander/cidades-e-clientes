@@ -3,6 +3,7 @@ const { MongoClient } = require('mongodb');
 
 class MongoDBDatasource extends Datasource {
   connectionUrl = process.env.MONGO_URI;
+  client;
 
   async connect() {
     if (this.connection) {
@@ -13,7 +14,7 @@ class MongoDBDatasource extends Datasource {
       .replace('user', process.env.MONGO_USER)
       .replace('password', process.env.MONGO_PASSWORD)).then(client => {
         console.log(`MongoDBDatasource :: connect :: conectado ao datasource com sucesso.`);
-
+        this.client = client;
         return client.db(process.env.MONGO_DATABASE || 'cidades-e-pessoas');
       }).catch(err => {
         console.log(`MongoDBDatasource :: connect :: error :: erro ao conectar com o datasource.`, JSON.stringify(err));
@@ -26,7 +27,7 @@ class MongoDBDatasource extends Datasource {
       return;
     }
 
-    await this.connection.close();
+    await this.client.close();
   }
 }
 

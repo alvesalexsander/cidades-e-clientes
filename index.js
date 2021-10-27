@@ -1,18 +1,19 @@
 require('dotenv').config();
 require('./app');
 
-const datasources = require('./datasources');
+const datasources = require('./src/datasources');
 
-const { Sexo } = require('./enums/sexo.enum');
-const { Estado } = require('./enums/estado.enum');
+const { Sexo } = require('./src/enums/sexo.enum');
+const { Estado } = require('./src/enums/estado.enum');
 
-const { Pessoa } = require('./models/pessoa.model');
-const { Cidade } = require('./models/cidade.model');
+const { Pessoa } = require('./src/models/pessoa.model');
+const { Cidade } = require('./src/models/cidade.model');
 
-const { PessoasRepository } = require('./repositories/pessoas.repository');
-const { CidadesRepository } = require('./repositories/cidades.repository');
+const { PessoasRepository } = require('./src/repositories/pessoas.repository');
+const { CidadesRepository } = require('./src/repositories/cidades.repository');
 
-initDatasources().then(() => {
+initDatasources()
+/* .then(() => {
   const city = new Cidade();
   city.nome = 'Macaé';
   city.estado = Estado.RJ;
@@ -20,7 +21,7 @@ initDatasources().then(() => {
   new CidadesRepository().create(city).then(() => {
     console.log('cidade criada!');
   })
-});
+}); */
 
 process.on('SIGTERM', async () => {
   console.info('SIGTERM');
