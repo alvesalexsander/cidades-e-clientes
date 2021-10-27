@@ -1,5 +1,5 @@
 require('dotenv').config();
-
+require('./app');
 const datasources = require('./datasources');
 
 initDatasources();
