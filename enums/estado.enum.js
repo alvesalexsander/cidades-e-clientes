@@ -1,4 +1,4 @@
-const estado = {
+const Estado = {
   AC: 'Acre',
   AL: 'Alagoas',
   AP: 'Amapá',
@@ -28,4 +28,4 @@ const estado = {
   TO: 'Tocantins',
 }
 
-module.exports = { estado };
+module.exports = { Estado };

@@ -1,5 +1,5 @@
 class Datasource {
-  instance;
+  connection;
   connectionUrl;
 
   connect() {

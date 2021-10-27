@@ -1,7 +1,7 @@
-const sexo = {
+const Sexo = {
   M: 'masculino',
   F: 'feminino',
   NI: 'não identificado'
 };
 
-module.exports = { sexo };
+module.exports = { Sexo };
