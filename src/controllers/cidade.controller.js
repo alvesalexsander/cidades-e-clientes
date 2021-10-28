@@ -1,11 +1,12 @@
 const { Controller } = require('./common/controller');
 
 class CidadeController extends Controller {
-  static endpoint = '/cidade';
+  static endpoint = /\/cidade.*/;
 
-  teste(req, res) {
-    res.send('eu sou teste');
-  }
+  routes = [
+    { path: /222/, do: (req, res) => res.send(`foiiii`)},
+    { path: `teste`, do: (req, res) => res.send(`foiiii2`)},
+  ];
 }
 
 module.exports = { CidadeController };
