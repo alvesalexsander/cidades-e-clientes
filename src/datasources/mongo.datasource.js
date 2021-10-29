@@ -31,6 +31,4 @@ class MongoDBDatasource extends Datasource {
   }
 }
 
-console.log(MongoDBDatasource.oi)
-
 module.exports = { MongoDBDatasource };
