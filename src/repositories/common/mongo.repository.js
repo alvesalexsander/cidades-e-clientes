@@ -2,7 +2,8 @@ const { Repository } = require('./repository');
 const { mongoDB } = require('../../datasources');
 
 class MongoRepository extends Repository {
-  collection;
+  #collection;
+  #model;
 
   constructor(model) {
     super(mongoDB);
@@ -11,21 +12,20 @@ class MongoRepository extends Repository {
       throw new Error(`${this.constructor.name} :: construction :: invalid model`);
     }
 
-    this.model = model;
-    
-    this.collection = this.datasource.connection.collection(new this.model().constructor.name);
+    this.#model = model;
+    this.#collection = this.datasource.connection.collection(new this.#model().constructor.name);
   }
 
-  create(entity) {
-    return this.collection.insertOne(entity);
+  async create(entity) {
+    return this.#collection.insertOne(entity);
   }
 
   async find(query = {}) {
-    return this.collection.find(query);
+    return this.#collection.find(query);
   }
 
   async findOne(query = {}) {
-    return this.collection.findOne(query);
+    return this.#collection.findOne(query);
   }
 
   async update(query = {}, update = {}) {
@@ -33,7 +33,7 @@ class MongoRepository extends Repository {
       throw new Error(`${this.constructor.name} :: update :: missing update data`);
     }
 
-    return this.collection.update(query, update);
+    return this.#collection.update(query, update);
   }
 
   async updateOne(query = {}, update = {}) {
@@ -41,15 +41,19 @@ class MongoRepository extends Repository {
       throw new Error(`${this.constructor.name} :: update :: missing update data`);
     }
 
-    return this.collection.updateOne(query, update);
+    return this.#collection.updateOne(query, update);
   }
 
   async delete(query = {}) {    
-    return this.collection.delete(query);
+    return this.#collection.delete(query);
   }
 
   async deleteOne(query = {}) {
-    return this.collection.deleteOne(query);
+    return this.#collection.deleteOne(query);
+  }
+
+  getCollection() {
+    return this.#collection;
   }
 
 }

@@ -11,6 +11,7 @@ function controllerMiddleware(req, res, next) {
   const handlerController = controllerCatalog[endpoint];
   if (!handlerController) {
     next();
+    return;
   }
   new handlerController().handle(req, res);
 }
