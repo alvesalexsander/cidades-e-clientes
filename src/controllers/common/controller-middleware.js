@@ -1,15 +1,18 @@
-const { controllerFactory } = require('./controller-factory');
+const controllers = require('../index');
 
-function controllerMiddleware(req, res, next) {
-  const target = req.url.match(/(\/\w*)/gm)[0];
-  const handlerController = controllerFactory(target)
-  if (handlerController) {
-    new handlerController(req, res).handle();
-    return;
-  }
-  console.log(`calling next`)
-  next();
+const controllerCatalog = {};
+
+for (const controller of Object.values(controllers)) {
+  controllerCatalog[controller.endpoint] = controller;
 }
 
+function controllerMiddleware(req, res, next) {
+  const endpoint = req.url.match(/(\/\w*)/gm)[0];
+  const handlerController = controllerCatalog[endpoint];
+  if (!handlerController) {
+    next();
+  }
+  new handlerController().handle(req, res);
+}
 
 module.exports = { controllerMiddleware };

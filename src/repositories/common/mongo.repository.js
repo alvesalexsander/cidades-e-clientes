@@ -1,5 +1,5 @@
-const { mongoDB } = require('../../datasources');
 const { Repository } = require('./repository');
+const { mongoDB } = require('../../datasources');
 
 class MongoRepository extends Repository {
   collection;
@@ -25,7 +25,7 @@ class MongoRepository extends Repository {
   }
 
   async findOne(query = {}) {
-    return this.collection.find(query);
+    return this.collection.findOne(query);
   }
 
   async update(query = {}, update = {}) {

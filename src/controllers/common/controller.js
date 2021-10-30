@@ -2,62 +2,42 @@ class Controller {
   static endpoint;
   routes = [];
 
-  constructor(req, res) {
-    this.req = req;
-    this.res = res;
-  }
-
-  handle() {
+  handle(req, res) {
     for (const handler of this.routes) {
-      if (!this.req.url.match(handler.path)) {
+      if (!req.url.match(handler.path)) {
         continue;
       }
       
-      const fn = handler[this.req.method.toUpperCase()];
-      if (fn) {
-        fn(this.req, this.res, {
-          body: this.req.body,
-          query: this.req.query
+      const handlerFn = handler[req.method.toUpperCase()];
+      if (handlerFn) {
+        handlerFn(req, res, {
+          body: req.body,
+          query: req.query
         });
         return;
       }
     }
-    this.res.status(404).send();
+    res.status(404).send();
   }
 
   get(path, cb) {
-    return {
-      path: path,
-      GET: cb
-    }
+    return { path: path, GET: cb }
   }
 
   post(path, cb) {
-    return {
-      path: path,
-      POST: cb
-    }
+    return { path: path, POST: cb }
   }
 
   delete(path, cb) {
-    return {
-      path: path,
-      DELETE: cb
-    }
+    return { path: path, DELETE: cb }
   }
 
   patch(path, cb) {
-    return {
-      path: path,
-      PATCH: cb
-    }
+    return { path: path, PATCH: cb }
   }
 
   put(path, cb) {
-    return {
-      path: path,
-      PUT: cb
-    }
+    return { path: path, PUT: cb }
   }
 }
 

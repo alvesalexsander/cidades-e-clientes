@@ -1,6 +1,6 @@
-const { controllerMiddleware} = require(`./src/controllers/common/controller-middleware`);
-
 const express = require('express');
+const { controllerMiddleware } = require(`./src/controllers/common`);
+
 const app = express();
 
 const port = process.env.APP_PORT || 3000;
