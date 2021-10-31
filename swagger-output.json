@@ -28,21 +28,6 @@
             "name": "estado",
             "in": "query",
             "type": "string"
-          },
-          {
-            "name": "obj",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "nome": {
-                  "example": "any"
-                },
-                "estado": {
-                  "example": "any"
-                }
-              }
-            }
           }
         ],
         "responses": {
@@ -195,11 +180,11 @@
           "200": {
             "description": "OK"
           },
-          "400": {
-            "description": "Bad Request"
-          },
           "404": {
             "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }

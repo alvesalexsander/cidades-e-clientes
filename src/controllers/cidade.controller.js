@@ -12,7 +12,7 @@ cidadeController.get(`/cidade`, (req, res, next) => {
   if (nome) {
     return getCidadeByNome(req, res);
   }
-
+  
   const estado = req.query.estado;
   if (estado) {
     return getCidadeByEstado(req, res);

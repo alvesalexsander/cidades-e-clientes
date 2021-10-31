@@ -8,9 +8,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm run swagger-autogen && node .",
-    "dev": "npm run swagger-autogen && nodemon .",
-    "swagger-autogen": "node swagger.js"
+    "start": "node .",
+    "dev": "nodemon .",
+    "swagger-gen": "node swagger.js"
   },
   "repository": {
     "type": "git",
