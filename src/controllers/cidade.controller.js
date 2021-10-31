@@ -9,11 +9,16 @@ const repository = new CidadesRepository();
 
 cidadeController.get(`/cidade`, (req, res, next) => {
   const nome = req.query.nome;
+  const estado = req.query.estado;
+
+  if (nome && estado) {
+    return res.status(400).send({ errorMessage: 'Requisição inválida. Consulte as cidades pelo nome OU pelo estado, não ambos.' });
+  }
+
   if (nome) {
     return getCidadeByNome(req, res);
   }
   
-  const estado = req.query.estado;
   if (estado) {
     return getCidadeByEstado(req, res);
   }

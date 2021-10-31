@@ -17,7 +17,7 @@
     "/cidade": {
       "get": {
         "tags": [],
-        "description": "",
+        "description": "Consulta Cidades cadastradas por nome OU por estado",
         "parameters": [
           {
             "name": "nome",
@@ -40,7 +40,7 @@
     "/cidade/cadastrar": {
       "post": {
         "tags": [],
-        "description": "",
+        "description": "Cadastra uma nova Cidade informando os campos necessários no body da requisição",
         "parameters": [
           {
             "name": "obj",
@@ -49,10 +49,10 @@
               "type": "object",
               "properties": {
                 "nome": {
-                  "example": "any"
+                  "example": "Vitória"
                 },
                 "estado": {
-                  "example": "any"
+                  "example": "ES"
                 }
               }
             }
@@ -68,7 +68,7 @@
     "/cliente/cadastrar": {
       "post": {
         "tags": [],
-        "description": "",
+        "description": "Cadastra um novo Cliente informando os campos necessários no body da requisição",
         "parameters": [
           {
             "name": "obj",
@@ -105,7 +105,7 @@
     "/cliente": {
       "get": {
         "tags": [],
-        "description": "",
+        "description": "Consulta Clientes cadastrados por nome OU id",
         "parameters": [
           {
             "name": "nome",
@@ -122,15 +122,10 @@
       },
       "delete": {
         "tags": [],
-        "description": "",
+        "description": "Remove um Cliente localizado pelo id",
         "parameters": [
           {
             "name": "id",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "novo_nome_completo",
             "in": "query",
             "type": "string"
           }
@@ -139,7 +134,7 @@
       },
       "put": {
         "tags": [],
-        "description": "",
+        "description": "Altera o nome de um Cliente cadastrado localizado pelo id para o novo_nome_completo",
         "parameters": [
           {
             "name": "id",
@@ -150,30 +145,6 @@
             "name": "novo_nome_completo",
             "in": "query",
             "type": "string"
-          },
-          {
-            "name": "obj",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "cidade": {
-                  "example": "any"
-                },
-                "estado": {
-                  "example": "any"
-                },
-                "nomeCompleto": {
-                  "example": "any"
-                },
-                "sexo": {
-                  "example": "any"
-                },
-                "dataNascimento": {
-                  "example": "any"
-                }
-              }
-            }
           }
         ],
         "responses": {

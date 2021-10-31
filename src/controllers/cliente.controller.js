@@ -26,11 +26,16 @@ clientController.post('/cliente/cadastrar', (req, res) => {
 
 clientController.get('/cliente', (req, res, next) => {
   const nome = req.query.nome;
+  const id = req.query.id;
+
+  if (nome && id) {
+    return res.status(400).send({ errorMessage: 'Requisição inválida. Consulte as cidades pelo nome OU pelo id, não ambos.' });
+  }
+
   if (nome) {
     return getClienteByNomeCompleto(req, res);
   }
 
-  const id = req.query.id;
   if (id) {
     return getClienteById(req, res);
   }
@@ -59,8 +64,8 @@ async function registerCliente(req, res) {
     const cidade = formatters.validatedCidadeNome(req.body.cidade);
     const estado = formatters.validatedEstado(req.body.estado);
 
-    if (!cidade) { return res.send(400).send("Falha ao cadastrar a cidade. O campo 'cidade' não é válido.") }
-    if (!estado) { return res.send(400).send("Falha ao cadastrar a cidade. O campo 'estado' não é válido.") }
+    if (!cidade) { return res.status(400).send("Falha ao cadastrar a cidade. O campo 'cidade' não é válido.") }
+    if (!estado) { return res.status(400).send("Falha ao cadastrar a cidade. O campo 'estado' não é válido.") }
 
     const cidadeDoc = await cidadeRepository.findOne({
       nome: { $regex: new RegExp(cidade, 'i') },
@@ -78,10 +83,10 @@ async function registerCliente(req, res) {
     const nomeCompleto = formatters.validatedClienteNome(req.body.nomeCompleto);
     const sexo = formatters.validatedSexo(req.body.sexo);
     const dataNascimento = formatters.validatedDataNascimento(req.body.dataNascimento);
-
-    if (!nomeCompleto) { return res.send(400).send("Falha ao cadastrar a cidade. O campo 'nomeCompleto' não é válido.") }
-    if (!sexo) { return res.send(400).send("Falha ao cadastrar a cidade. O campo 'sexo' não é válido.") }
-    if (!dataNascimento) { return res.send(400).send("Falha ao cadastrar a cidade. O campo 'dataNascimento' não é válido.") }
+    
+    if (!nomeCompleto) { return res.status(400).send("Falha ao cadastrar a cidade. O campo 'nomeCompleto' não é válido.") }
+    if (!sexo) { return res.status(400).send("Falha ao cadastrar a cidade. O campo 'sexo' não é válido.") }
+    if (!dataNascimento) { return res.status(400).send("Falha ao cadastrar a cidade. O campo 'dataNascimento' não é válido.") }
 
     const entity = new Cliente();
     entity.nomeCompleto = nomeCompleto;
@@ -92,7 +97,7 @@ async function registerCliente(req, res) {
     await clienteRepository.create(entity);
     res.status(200).send({ message: `Cliente ${entity.nomeCompleto} cadastrado(a) com suceso` });
   } catch (error) {
-    console.log(error);
+    console.log(`aqui`, error);
     res.status(500).send({ errorMessage: 'Occoreu um erro e não será possível prosseguir com a operação' });
   }
 }
@@ -140,25 +145,14 @@ async function getClienteById(req, res) {
 
 async function removeCliente(req, res) {
   try {
-    const id = req.query.id;
-    if (formatters.validatedId(id)) {
-      res.status(400).send({ errorMessage: "Requisição inválida no parâmetro 'id'." });
-      return;
-    }
-
-    const existingCliente = await clienteRepository.findOne({
-      _id: new ObjectId(id)
-    });
-    if (!existingCliente) {
-      res.status(404).send({ errorMessage: 'Cliente não encontrado(a)' });
-      return;
-    }
+    const id = formatters.validatedId(req.query.id);
+    if (!id) { return res.status(400).send({ errorMessage: "Requisição inválida no parâmetro 'id'." }); }
 
     const result = await clienteRepository.deleteOne({
       _id: new ObjectId(id)
     });
 
-    res.status(result.code).send(result.message);
+    res.status(result.code).send({ message: result.message });
   } catch (error) {
     console.log(error);
     res.status(500).send({ errorMessage: 'Occoreu um erro e não será possível prosseguir com a operação' });

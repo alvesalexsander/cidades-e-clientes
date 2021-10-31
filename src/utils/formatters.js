@@ -1,3 +1,4 @@
+const { DateTime } = require('luxon');
 const { Estado, Sexo } = require('../enums');
 
 function validatedId(value) {
@@ -18,7 +19,7 @@ function validatedClienteNome(value) {
 
 function validatedDataNascimento(value) {
   value = value.match?.(/(^\d{2}\/\d{2}\/\d{4}$)/)?.[1];
-  if (!value) {
+  if (!value || !DateTime.fromFormat(value, 'dd/LL/yyyy').isValid) {
     return null;
   }
   return value;
