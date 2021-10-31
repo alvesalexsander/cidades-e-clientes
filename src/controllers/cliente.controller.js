@@ -56,7 +56,6 @@ class ClienteController extends Controller {
   }
 
   async getClienteByNomeCompleto(req, res, data) {
-    // TODO criar um HTTPResponseBuilder
     try {
       const match = data.query.nome.replace(/_/gm, ' ');
       if (!match) {
@@ -74,7 +73,6 @@ class ClienteController extends Controller {
   }
 
   async getClienteById(req, res, data) {
-    // TODO criar um HTTPResponseBuilder
     try {
       if (!data.query.id) {
         res.status(400).send('Requisição inválida no parâmetro "id".');
@@ -96,7 +94,6 @@ class ClienteController extends Controller {
   }
 
   async removeCliente(req, res, data) {
-    // TODO criar um HTTPResponseBuilder
     try {
       if (!data.query.id) {
         res.status(400).send('Requisição inválida no parâmetro "id".');
@@ -122,7 +119,6 @@ class ClienteController extends Controller {
   }
 
   async renameCliente(req, res, data) {
-    // TODO criar um HTTPResponseBuilder
     try {
       if (!data.query.id) {
         res.status(400).send('Requisição inválida no parâmetro "id".');

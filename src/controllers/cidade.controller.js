@@ -37,7 +37,6 @@ class CidadeController extends Controller {
   }
 
   async createCidade(req, res, data) {
-    // TODO criar um HTTPResponseBuilder
     const entity = new Cidade();
     entity.nome = data.body.nome.charAt(0).toUpperCase() + data.body.nome.slice(1);
     entity.estado = Estado[data.body.estado];
