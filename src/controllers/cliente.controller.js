@@ -77,7 +77,7 @@ async function registerCliente(req, res) {
 async function getClienteByNomeCompleto(req, res) {
   const nome = req.query.nome;
   try {
-    const match = nome.replace(/_/gm, ' ');
+    const match = nome.replace(/_/gm, ' ')?.match(/(^[a-z_A-ZÀ-ž]{1,200}$)/)?.[1];
     if (!match) {
       return res.status(400).send({ errorMessage: "Requisição inválida no parâmetro 'nome'." });
     }
