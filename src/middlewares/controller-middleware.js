@@ -1,4 +1,4 @@
-const controllers = require('../index');
+const controllers = require('../controllers/index');
 
 const controllerCatalog = {};
 
