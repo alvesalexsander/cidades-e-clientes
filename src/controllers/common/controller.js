@@ -12,7 +12,8 @@ class Controller {
       if (handlerFn) {
         handlerFn(req, res, {
           body: req.body,
-          query: req.query
+          query: req.query,
+          route: handler.path
         });
         return;
       }
@@ -21,23 +22,23 @@ class Controller {
   }
 
   get(path, cb) {
-    return { path: path, GET: cb }
+    return { path, GET: cb}
   }
 
   post(path, cb) {
-    return { path: path, POST: cb }
+    return { path, POST: cb}
   }
 
   delete(path, cb) {
-    return { path: path, DELETE: cb }
+    return { path, DELETE: cb }
   }
 
   patch(path, cb) {
-    return { path: path, PATCH: cb }
+    return { path, PATCH: cb }
   }
 
   put(path, cb) {
-    return { path: path, PUT: cb }
+    return { path, PUT: cb }
   }
 }
 

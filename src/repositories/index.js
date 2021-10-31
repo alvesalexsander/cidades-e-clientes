@@ -1,7 +1,7 @@
-const { PessoasRepository } = require('./pessoas.repository');
+const { ClientesRepository } = require('./clientes.repository');
 const { CidadesRepository } = require('./cidades.repository');
 
 module.exports = {
-  PessoasRepository,
+  ClientesRepository,
   CidadesRepository
 };

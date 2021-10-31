@@ -1,7 +1,14 @@
 const Sexo = {
-  M: 'masculino',
-  F: 'feminino',
-  NI: 'não identificado'
+  M: 'M',
+  F: 'F',
+  NI: 'NI',
+
+  m: 'M',
+  f: 'F',
+  ni: 'NI',
+
+  Ni: 'NI',
+  nI: 'NI',
 };
 
 module.exports = { Sexo };

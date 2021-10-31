@@ -15,7 +15,7 @@ class MongoDBDatasource extends Datasource {
       .replace('password', process.env.MONGO_PASSWORD)).then(client => {
         console.log(`MongoDBDatasource :: connect :: conectado ao datasource com sucesso.`);
         this.#client = client;
-        return client.db(process.env.MONGO_DATABASE || 'cidades-e-pessoas');
+        return client.db(process.env.MONGO_DATABASE || 'cidades-e-clientes');
       }).catch(err => {
         console.log(`MongoDBDatasource :: connect :: error :: erro ao conectar com o datasource.`, JSON.stringify(err));
         throw err;

@@ -1,0 +1,37 @@
+{
+  $jsonSchema: {
+    bsonType: 'object',
+    required: [
+      'nomeCompleto',
+      'sexo',
+      'dataNascimento',
+      'cidade'
+    ],
+    properties: {
+      nomeCompleto: {
+        bsonType: 'string',
+        description: 'nome do cliente'
+      },
+      sexo: {
+        'enum': [
+          'M',
+          'F',
+          'NI'
+        ],
+        description: 'caracter representando o sexo do cliente'
+      },
+      dataNascimento: {
+        bsonType: 'date',
+        description: 'Date representando a data de nascimento do cliente'
+      },
+      idade: {
+        bsonType: 'int',
+        description: 'idade do cliente'
+      },
+      cidade: {
+        bsonType: 'objectId',
+        description: '_id do documento Cidade que o cliente mora atualmente'
+      }
+    }
+  }
+}

@@ -20,12 +20,12 @@ class MongoRepository extends Repository {
     return this.#collection.insertOne(entity);
   }
 
-  async find(query = {}) {
-    return this.#collection.find(query);
+  async find(query = {}, projection = {}) {
+    return this.#collection.find(query, projection);
   }
 
-  async findOne(query = {}) {
-    return this.#collection.findOne(query);
+  async findOne(query = {}, projection = {}) {
+    return this.#collection.findOne(query, projection);
   }
 
   async update(query = {}, update = {}) {
@@ -33,7 +33,13 @@ class MongoRepository extends Repository {
       throw new Error(`${this.constructor.name} :: update :: missing update data`);
     }
 
-    return this.#collection.update(query, update);
+    const result = await this.#collection.update(query, update);
+    
+    if (result.nModified) {
+      return { code: 200, message: `${result.nModified} registro(s) modificado(s) com sucesso.` }
+    }
+
+    return { code: 202, message: 'Nenhum registro modificado.' };
   }
 
   async updateOne(query = {}, update = {}) {
@@ -41,15 +47,42 @@ class MongoRepository extends Repository {
       throw new Error(`${this.constructor.name} :: update :: missing update data`);
     }
 
-    return this.#collection.updateOne(query, update);
+    const result = await this.#collection.updateOne(query, update);
+    if (!result.acknowledged) {
+      throw new Error(`Ocorreu um erro ao tentar executar a operação.`)
+    }
+    
+    if (result.modifiedCount) {
+      return { code: 200, message: 'Registro modificado com sucesso.' }
+    }
+
+    return { code: 202, message: 'Nenhum registro modificado.' };
   }
 
-  async delete(query = {}) {    
-    return this.#collection.delete(query);
+  async delete(query = {}) {
+    const result = await this.#collection.delete(query);
+    if (!result.acknowledged) {
+      throw new Error(`Ocorreu um erro ao tentar executar a operação.`)
+    }
+    
+    if (result.deletedCount) {
+      return { code: 200, message: `${result.deletedCount} registro(s) removido(s) com sucesso.` }
+    }
+
+    return { code: 202, message: 'Nenhum registro removido.' };
   }
 
   async deleteOne(query = {}) {
-    return this.#collection.deleteOne(query);
+    const result = await this.#collection.deleteOne(query);
+    if (!result.acknowledged) {
+      throw new Error(`Ocorreu um erro ao tentar executar a operação.`)
+    }
+    
+    if (result.deletedCount) {
+      return { code: 200, message: 'Registro removido com sucesso.' }
+    }
+
+    return { code: 202, message: 'Nenhum registro removido.' };
   }
 
   getCollection() {

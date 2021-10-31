@@ -1,9 +1,21 @@
 require('dotenv').config();
-require('./server');
 
-const datasources = require('./src/datasources');
+const { initDatasources, closeDatasources } = require('./src/datasources');
 
-initDatasources();
+initDatasources().then(() => {
+  require('./server');
+});
+
+async function gracefulShutdown() {
+  console.log('App :: gracefulShutdown :: tentando graceful shutdown da aplicação...');
+  try {
+    await closeDatasources();
+    console.log('App :: gracefulShutdown :: sucesso, saindo da aplicação');
+  } catch (err) {
+    console.log('App :: gracefulShutdown :: erro durante o graceful shutdown...', JSON.stringify(err));
+    process.exit(1);
+  }
+}
 
 process.on('SIGTERM', async () => {
   console.info('SIGTERM');
@@ -18,26 +30,3 @@ process.on('SIGINT', async () => {
     process.exit(0);
   });
 });
-
-async function initDatasources() {
-  for (const ds of Object.values(datasources)) {
-    await ds.connect();
-  }
-}
-
-async function closeDatasources() {
-  for (const ds of Object.values(datasources)) {
-    await ds.close();
-  }
-}
-
-async function gracefulShutdown() {
-  console.log('App :: gracefulShutdown :: tentando graceful shutdown da aplicação...');
-  try {
-    await closeDatasources();
-    console.log('App :: gracefulShutdown :: sucesso, saindo da aplicação');
-  } catch (err) {
-    console.log('App :: gracefulShutdown :: erro durante o graceful shutdown...', JSON.stringify(err));
-    process.exit(1);
-  }
-}

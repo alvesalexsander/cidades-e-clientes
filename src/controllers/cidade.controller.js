@@ -1,37 +1,54 @@
 const { Controller } = require('./common/controller');
 const { CidadesRepository } = require('../repositories/');
 const { Cidade } = require('../models/cidade.model');
+const { Estado } = require('../enums/estado.enum');
 
 class CidadeController extends Controller {
   static endpoint = '/cidade';
+
   #repository = new CidadesRepository();
 
   routes = [
-    this.get(/\/consulta\/(\w.[^\/|\?]*)/, (req, res) => this.getCidade(req, res)),
+    this.get(/\/cidade\/\?nome=([a-z_A-ZÀ-ž%.{2}]{2,100}|[%.{2}]{1,100}$)/, (req, res, data) => this.getCidadeByNome(req, res, data)),
+    this.get(/\/cidade\/\?estado=([a-zA-Z]{2}$)/, (req, res, data) => this.getCidadeByEstado(req, res, data)),
     this.post('cadastrar', (req, res, data) => this.createCidade(req, res, data)),
   ];
 
-  async getCidade(req, res) {
-    let match = req.url.match(/\/consulta\/(\w.[^\/|\?]*)/)?.[1];
-    match = match.replace(/_/gm, ' ');
-    res.send(await this.#repository.getCollection().find({ nome: decodeURIComponent(match) }).toArray());
+  async getCidadeByNome(req, res, data) {
+    const match = data.query.nome.replace(/_/gm, ' ');
+    if (!match) {
+      res.status(400).send('Requisição inválida no parâmetro "nome".');
+    }
+    
+    res.status(200).send(await this.#repository.getCollection().find({
+      nome: match
+    }).toArray());
+  }
+
+  async getCidadeByEstado(req, res, data) {
+    const match = data.query.estado.replace(/_/gm, ' ');
+    if (!match) {
+      res.status(400).send('Requisição inválida no parâmetro "estado".');
+    }
+    
+    res.status(200).send(await this.#repository.getCollection().find({
+      estado: Estado[match]
+    }).toArray());
   }
 
   async createCidade(req, res, data) {
+    // TODO criar um HTTPResponseBuilder
     const entity = new Cidade();
-    entity.nome = data.body.nome;
-    entity.estado = data.body.estado;
+    entity.nome = data.body.nome.charAt(0).toUpperCase() + data.body.nome.slice(1);
+    entity.estado = Estado[data.body.estado];
     try {
       await this.#repository.create(entity);
-      res.status(200).send();
-    } catch(error) {
-      res.status(400).send(error.message);
+      res.status(200).send('Cidade cadastrada com sucesso.');
+    } catch (error) {
+      res.status(400).send(`Erro ao cadastrar a cidade :: ${error.message}`);
     }
   }
 
-  answerPost(req, res, data) {
-    res.send(data.body);
-  }
 }
 
 module.exports = { CidadeController };
