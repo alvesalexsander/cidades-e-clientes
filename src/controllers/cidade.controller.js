@@ -25,7 +25,7 @@ cidadeController.post('/cidade/cadastrar', (req, res) => createCidade(req, res))
 async function getCidadeByNome(req, res) {
   const nome = req.query.nome;
   const match = nome?.replace(/_/gm, ' ').match(/^([a-z A-ZÀ-ž]{2,100}$)/)?.[1];
-  if (!match || !Estado[match]) {
+  if (!match) {
     return res.status(400).send({ errorMessage: "Requisição inválida no parâmetro 'nome'." });
   }
 
@@ -37,7 +37,7 @@ async function getCidadeByNome(req, res) {
 async function getCidadeByEstado(req, res) {
   const estado = req.query.estado;
   const match = estado.replace(/_/gm, ' ').match(/^([a-zA-Z]{2}$)/)?.[1];
-  if (!match) {
+  if (!match || !Estado[match]) {
     return res.status(400).send({ errorMessage: "Requisição inválida no parâmetro 'estado'." });
   }
 
