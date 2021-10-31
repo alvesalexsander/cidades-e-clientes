@@ -1,0 +1,286 @@
+FORMAT: 1A
+HOST: https://cidades-e-clientes.herokuapp.com/
+
+# Cidades e Clientes API
+
+Este documento apresenta as operações suportadas pela Cidades e Clientes API.
+
+Autor: Alexsander Apulinario Martins Alves.
+
+## Consultar Cidade pelo nome [/cidade/{?nome}]
+
+### Endpoint: http://server/cidade/?nome= [GET]
+
+Consulta as cidades cadastradas através do query param *nome*.
+
+A operação falhará caso: 
+
+- O campo *nome* passado na requisição não possuir um formato válido.
+
++ Parameters
+    + nome (string) ... Nome da cidade. Aceita separação de palavras por _ (underscore). Aceita URI encoded component.
+
++ Response 200 (application/json)
+
+            [
+              {
+                "_id": "617e88398ffb4b625741d159",
+                "nome": "Bonito",
+                "estado": "MS"
+              },
+              {
+                "_id": "617e88448ffb4b625741d15a",
+                "nome": "Bonito",
+                "estado": "PE"
+              }
+            ]
+        
++ Response 400 (application/json)
+
+            { "errorMessage": "Requisição inválida no parâmetro 'nome'". }
+        
++ Response 400 (application/json)
+
+            { "errorMessage": "Requisição inválida. Consulte as cidades pelo nome OU pelo estado, não ambos." }
+        
++ Response 500 (application/json)
+
+            {   "errorMessage": "Occoreu um erro e não será possível prosseguir com a operação"   }
+
+## Consultar Cidade pelo estado [/cidade/{?estado}]
+### Endpoint: http://server/cidade/?estado= [GET]
+
+Consulta as cidades cadastradas através do query param *estado*.
+
+A operação falhará caso: 
+
+- A sigla do campo *estado* não referencie um das UF existentes.
+
++ Parameters
+    + estado (string) ... Sigla do estado (UF) com 2 posições. Exemplos: RJ, sp, Mg
+
++ Response 200 (application/json)
+
+    + Body
+
+            [
+              {
+                "_id": "617da55cc779ae8e6fd78a6d",
+                "nome": "Uruguaiana",
+                "estado": "RS"
+              }
+            ]
+
++ Response 400 (application/json)
+
+            { "errorMessage": "Requisição inválida no parâmetro 'estado'." }
+            
++ Response 400 (application/json)
+
+            { "errorMessage": "Requisição inválida. Consulte as cidades pelo nome OU pelo estado, não ambos." }
+        
++ Response 500 (application/json)
+
+            {   "errorMessage": "Occoreu um erro e não será possível prosseguir com a operação"   }
+    
+        
+## Cadastrar Cidade [/cidade/cadastrar]
+### Endpoint: http://server/cidade/cadastrar [POST]
+
+Cadastra uma cidade recebendo um body no formato JSON contendo o *nome da cidade* e a *sigla do estado*.
+
+A operação falhará caso: 
+
+- A cidade já esteja cadastrada.
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "nome": "Campos dos Goytacazes",
+                "estado": "RJ"
+            }
+
++ Response 200 (application/json)
+
+        { "message": "Cidade cadastrada com sucesso." }
+
++ Response 400 (application/json)
+
+            {
+                "errorMessage": "Erro ao cadastrar a cidade. Cidade já cadastrada." 
+            }
+        
++ Response 500 (application/json)
+
+            {   "errorMessage": "Occoreu um erro e não será possível prosseguir com a operação"   }
+    
+
+## Consultar Cliente pelo nome [/cliente/{?nome}]
+
+### Endpoint: http://server/cliente/?nome= [GET]
+
+Consulta os clientes cadastrados através do query param *nome*.
+Retorna no máximo 100 clientes.
+
+A operação falhará caso: 
+
+- O *nome* passado na requisição não possuir um formato válido OU possuir mais do que 200 caracteres.
+
++ Parameters
+    + nome (string) ... Nome ou parte do nome do cliente. Aceita separação de palavras por _ (underscore). Aceita URI encoded component.
+
++ Response 200 (application/json)
+
+            [
+              {
+                "_id": "617e0342cf34ef827bd486b6",
+                "nomeCompleto": "Vanda Lucia",
+                "sexo": "F",
+                "dataNascimento": "1964-02-19T02:00:00.000Z",
+                "idade": 57,
+                "cidade": "617d829595e295afa83f12a3"
+              },
+              {
+                "_id": "617ea55c0bf4ccc856b521c2",
+                "nomeCompleto": "Vanusa Corrêa",
+                "sexo": "NI",
+                "dataNascimento": "1960-04-22T03:00:00.000Z",
+                "idade": 61,
+                "cidade": "617e9e08a56d2133549b5c63"
+              }
+            ]
+        
++ Response 400 (application/json)
+
+            { "errorMessage": "Requisição inválida no parâmetro 'nome'". }
+        
++ Response 500 (application/json)
+
+            {   "errorMessage": "Occoreu um erro e não será possível prosseguir com a operação"   }
+        
+        
+## Consultar Cliente pelo id [/cliente/{?id}]
+
+### Endpoint: http://server/cliente/?id= [GET]
+
+Consulta o cliente cadastrado localizado através do query param *id*.
+
+Exemplos de para teste: 
+
+617d935188a0cf7b42f68974
+
+617dbe614b204e9ae750a563
+
+617e0342cf34ef827bd486b6
+
+A operação falhará caso: 
+
+- O *id* passado na requisição não possuir um formato válido.
+
++ Parameters
+    + id (string) ... id de registro do cliente.
+
++ Response 200 (application/json)
+
+            {
+              "_id": "617d935188a0cf7b42f68974",
+              "nomeCompleto": "Alexsander Alves",
+              "sexo": "M",
+              "dataNascimento": "1993-10-13T03:00:00.000Z",
+              "idade": 28,
+              "cidade": "617d4868cd1099e821547075"
+            }
+        
++ Response 400 (application/json)
+
+            { "errorMessage": "Requisição inválida no parâmetro 'id'". }
+        
++ Response 400 (application/json)
+
+            { "errorMessage": "Cliente não encontrado(a)". }
+        
++ Response 500 (application/json)
+
+            {   "errorMessage": "Occoreu um erro e não será possível prosseguir com a operação"   }
+        
+        
+## Cadastrar Cliente [/cliente/cadastrar]
+### Endpoint: http://server/cliente/cadastrar [POST]
+
+Cadastra um cliente recebendo um body no formato JSON contendo o *nome*, o *sexo*, a *data de nascimento*, o *nome da cidade* e a *sigla do estado*.
+
+A operação falhará caso:
+
+- O *nome* passado na requisição não possuir um formato válido OU possuir mais do que 200 caracteres.
+
+- O cliente já esteja cadastrado (já houver um registro com todos os campos idênticos ao novo registro)
+
+- O par *cidade* e *estado* não referenciar uma Cidade já cadastrada.
+
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "nomeCompleto": "Vanusa Corrêa",
+                "sexo": "NI",
+                "dataNascimento": "22/04/1960",
+                "cidade": "Uruguaiana",
+                "estado": "RS"
+            }
+
++ Response 200 (application/json)
+
+            { "message": "Cidade cadastrada com sucesso." }
+
++ Response 400 (application/json)
+
+            {   "errorMessage": "Erro ao cadastrar a cidade. Cidade já cadastrada."     }
+        
++ Response 500 (application/json)
+
+            {   "errorMessage": "Occoreu um erro e não será possível prosseguir com a operação"   }
+            
+## Alterar nomde do Cliente [/cliente/{?id,novo_nome_completo}]
+### Endpoint: http://server/cliente/?id=&novo_nome_completo= [PUT]
+
+Altera o nome cliente cadastrado localizado pelo parâmetro *id* para o valor recebido no parâmetro *novo_nome_completo*.
+
+A operação falhará caso:
+
+- O *id* passado na requisição não possuir um formato válido.
+
+- O *novo_nome_completo* passado na requisição não possuir um formato válido OU possuir mais do que 200 caracteres.
+
+
+A operação não modificará o cadastro caso:
+
+- O *novo_nome_completo* passado na requisição não for diferente do nomeCompleto atualmente cadastrado.
+
+
++ Parameters
+    + id (string) ... id de registro do cliente.
+    + novo_nome_completo (string) ... novo nome completo para o cliente
+
++ Response 200 (application/json)
+
+            { "message": "Registro modificado com sucesso." }
+            
++ Response 202 (application/json)
+
+            { "message": "Nenhum registro modificado." }
+
++ Response 400 (application/json)
+
+            {   "errorMessage": "Requisição inválida no parâmetro 'id'."     }
+            
++ Response 400 (application/json)
+
+            {   "errorMessage": "Requisição inválida no parâmetro 'novo_nome_completo'."     }
+        
++ Response 500 (application/json)
+
+            {   "errorMessage": "Occoreu um erro e não será possível prosseguir com a operação"   }
