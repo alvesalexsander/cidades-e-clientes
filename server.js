@@ -8,7 +8,6 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 
 const swaggerUi = require('swagger-ui-express')
-const swaggerFile = require('./swagger-output.json')
 
 const app = express();
 
@@ -19,7 +18,11 @@ app.use(express.json());
 app.use(cors());
 app.use(morgan('combined'));
 
-app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+if (process.env.ENV_NAME === 'heroku') {
+  app.use('/doc', swaggerUi.serve, swaggerUi.setup(require('./swagger-output-heroku.json')));
+} else if (process.env.ENV_NAME === 'local') {
+  app.use('/doc', swaggerUi.serve, swaggerUi.setup(require('./swagger-output-local.json')));
+}
 
 /* app.use(jwtMiddleware); */
 

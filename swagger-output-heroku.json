@@ -1,0 +1,165 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Cidades e Clientes API",
+    "description": "\n    Desafio de desenvolvimento de uma Web API Rest da Compasso UOL.\n\n    Desenvolvido por: Alexsander Apulinario Martins Alves.",
+    "version": "1.0.0"
+  },
+  "host": "https://cidades-e-clientes.herokuapp.com",
+  "basePath": "/",
+  "tags": [],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [],
+  "produces": [],
+  "paths": {
+    "/cidade": {
+      "get": {
+        "tags": [],
+        "description": "Consulta Cidades cadastradas por nome OU por estado",
+        "parameters": [
+          {
+            "name": "nome",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "estado",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/cidade/cadastrar": {
+      "post": {
+        "tags": [],
+        "description": "Cadastra uma nova Cidade informando os campos necessários no body da requisição",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "example": "Vitória"
+                },
+                "estado": {
+                  "example": "ES"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/cliente/cadastrar": {
+      "post": {
+        "tags": [],
+        "description": "Cadastra um novo Cliente informando os campos necessários no body da requisição",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nomeCompleto": {
+                  "example": "any"
+                },
+                "sexo": {
+                  "example": "any"
+                },
+                "dataNascimento": {
+                  "example": "any"
+                },
+                "cidade": {
+                  "example": "any"
+                },
+                "estado": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/cliente": {
+      "get": {
+        "tags": [],
+        "description": "Consulta Clientes cadastrados por nome OU id",
+        "parameters": [
+          {
+            "name": "nome",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      },
+      "delete": {
+        "tags": [],
+        "description": "Remove um Cliente localizado pelo id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      },
+      "put": {
+        "tags": [],
+        "description": "Altera o nome de um Cliente cadastrado localizado pelo id para o novo_nome_completo",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "novo_nome_completo",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {}
+}
