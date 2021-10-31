@@ -1,7 +1,7 @@
-const { CidadeController } = require('./cidade.controller');
-const { ClienteController } = require('./cliente.controller');
+const { cidadeController } = require('./cidade.controller');
+const { clientController } = require('./cliente.controller');
 
 module.exports = {
-  CidadeController,
-  ClienteController
+  cidadeController,
+  clientController
 };
