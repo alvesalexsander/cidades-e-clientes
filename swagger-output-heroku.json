@@ -5,11 +5,11 @@
     "description": "\n    Desafio de desenvolvimento de uma Web API Rest da Compasso UOL.\n\n    Desenvolvido por: Alexsander Apulinario Martins Alves.",
     "version": "1.0.0"
   },
-  "host": "https://cidades-e-clientes.herokuapp.com",
+  "host": "cidades-e-clientes.herokuapp.com",
   "basePath": "/",
   "tags": [],
   "schemes": [
-    "http"
+    "https"
   ],
   "consumes": [],
   "produces": [],
