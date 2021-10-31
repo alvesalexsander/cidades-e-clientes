@@ -13,19 +13,30 @@ class ClienteController extends Controller {
   #cidadeRepository = new CidadesRepository();
 
   routes = [
-    this.post('/cadastrar', (req, res, data) => this.registerCliente(req, res, data)),
+    this.post('/cliente/cadastrar', (req, res, data) => this.registerCliente(req, res, data)),
 
-    this.get(/\/cliente\/\?nome=([a-z_A-ZÀ-ž]{2,100}|[%\w{2}]{1,100}$)/,
-      (req, res, data) => this.getClienteByNomeCompleto(req, res, data)),
-
-    this.get(/\/cliente\/\?id=([\w]{24}$)/,
-      (req, res, data) => this.getClienteById(req, res, data)),
-
-    this.delete(/\/cliente\/\?id=([\w]{24}$)/,
-      (req, res, data) => this.removeCliente(req, res, data)),
-
-    this.put(/\/cliente\/\?id=([\w]{24})&novo_nome_completo=([a-z_A-ZÀ-ž]{2,100}|[%\w{2}]{1,100}$)/,
-      (req, res, data) => this.renameCliente(req, res, data)),
+    this.get('/cliente', (req, res, data, next) => {
+      if (data.query?.nome?.match(/([a-z_A-ZÀ-ž]{1,200}|[%\w{2}]{1,200}$)/)) {
+        return this.getClienteByNomeCompleto(req, res, data);
+      }
+      if (data.query?.id?.match(/([\w]{24}$)/)) {
+        return this.getClienteById(req, res, data);
+      }
+      next();
+    }),
+    this.delete('/cliente', (req, res, data, next) => {
+      if (data.query?.id?.match(/([\w]{24}$)/)) {
+        return this.removeCliente(req, res, data);
+      }
+      next();
+    }),
+    
+    this.put('/cliente', (req, res, data, next) => {
+      if (data.query?.id?.match(/([\w]{24}$)/) && data.query?.novo_nome_completo?.match(/([a-z_A-ZÀ-ž]{1,200}|[%\w{2}]{1,200}$)/)) {
+        return this.renameCliente(req, res, data);
+      }
+      next();
+    }),
   ];
 
   async registerCliente(req, res, data) {

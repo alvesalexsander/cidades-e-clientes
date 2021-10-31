@@ -9,17 +9,24 @@ class CidadeController extends Controller {
   #repository = new CidadesRepository();
 
   routes = [
-    this.get(/\/cidade\/\?nome=([a-z_A-ZÀ-ž%.{2}]{2,100}|[%.{2}]{1,100}$)/, (req, res, data) => this.getCidadeByNome(req, res, data)),
-    this.get(/\/cidade\/\?estado=([a-zA-Z]{2}$)/, (req, res, data) => this.getCidadeByEstado(req, res, data)),
-    this.post('cadastrar', (req, res, data) => this.createCidade(req, res, data)),
+    this.get(`/cidade`, (req, res, data, next) => {
+      if (data.query?.nome) {
+        return this.getCidadeByNome(req, res, data);
+      }
+      if (data.query?.estado) {
+        return this.getCidadeByEstado(req, res, data);
+      }
+      next();
+    }),
+    this.post('/cidade/cadastrar', (req, res, data) => this.createCidade(req, res, data)),
   ];
 
   async getCidadeByNome(req, res, data) {
-    const match = data.query.nome.replace(/_/gm, ' ');
+    const match = data?.query?.nome?.replace(/_/gm, ' ');
     if (!match) {
       res.status(400).send('Requisição inválida no parâmetro "nome".');
     }
-    
+
     res.status(200).send(await this.#repository.getCollection().find({
       nome: match
     }).toArray());
@@ -30,7 +37,7 @@ class CidadeController extends Controller {
     if (!match) {
       res.status(400).send('Requisição inválida no parâmetro "estado".');
     }
-    
+
     res.status(200).send(await this.#repository.getCollection().find({
       estado: Estado[match]
     }).toArray());

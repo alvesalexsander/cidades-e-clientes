@@ -1,7 +1,7 @@
 const { jwtMiddleware } = require('./jwt.middleware');
-const { controllerMiddleware } = require('./controller-middleware');
+const { controllerRoutes } = require('./controller-routes.middleware');
 
 module.exports = {
   jwtMiddleware,
-  controllerMiddleware
+  controllerRoutes
 };

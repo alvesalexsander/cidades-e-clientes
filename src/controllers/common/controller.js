@@ -2,7 +2,7 @@ class Controller {
   static endpoint;
   routes = [];
 
-  handle(req, res) {
+  handle(req, res, next) {
     for (const handler of this.routes) {
       if (!req.url.match(handler.path)) {
         continue;
@@ -14,7 +14,7 @@ class Controller {
           body: req.body,
           query: req.query,
           route: handler.path
-        });
+        }, next);
         return;
       }
     }
@@ -22,23 +22,23 @@ class Controller {
   }
 
   get(path, cb) {
-    return { path, GET: cb}
+    return { path, method: 'get', GET: cb}
   }
 
   post(path, cb) {
-    return { path, POST: cb}
+    return { path, method: 'post', POST: cb}
   }
 
   delete(path, cb) {
-    return { path, DELETE: cb }
+    return { path, method: 'delete', DELETE: cb }
   }
 
   patch(path, cb) {
-    return { path, PATCH: cb }
+    return { path, method: 'patch', PATCH: cb }
   }
 
   put(path, cb) {
-    return { path, PUT: cb }
+    return { path, method: 'put', PUT: cb }
   }
 }
 
