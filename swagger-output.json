@@ -11,13 +11,6 @@
   "schemes": [
     "http"
   ],
-  "securityDefinitions": {
-    "oAuthSample": {
-      "type": "oauth2",
-      "authorizationUrl": "https://dev-y0wx5b85.auth0.com/authorize?audience=https://dashboard.heroku.com/apps/cidades-e-clientes",
-      "flow": "implicit"
-    }
-  },
   "consumes": [],
   "produces": [],
   "paths": {

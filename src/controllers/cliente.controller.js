@@ -49,10 +49,10 @@ async function registerCliente(req, res) {
     estado: { $regex: new RegExp(estado, 'i') }
   });
   if (!cidadeDoc) {
-    res.status(404).send(`Falha ao cadastrar o cliente. Motivo: Cidade não encontrada.
+    res.status(404).send({ message:`Falha ao cadastrar o cliente. Motivo: Cidade não encontrada.
         Possíveis causas: 
         1. Erro de ortografia. Verifique se o nome da cidade e a sigla do estado estão corretas.
-        2. Cidade ${cidade} não cadastrada no estado ${estado}.`);
+        2. Cidade ${cidade} não cadastrada no estado ${estado}.` });
     return;
   }
 
@@ -68,9 +68,9 @@ async function registerCliente(req, res) {
 
   try {
     await clienteRepository.create(entity);
-    res.status(200).send(`Cliente ${entity.nomeCompleto} cadastrado(a) com suceso`);
+    res.status(200).send({ message: `Cliente ${entity.nomeCompleto} cadastrado(a) com suceso` });
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(400).send({ errorMessage: error.message });
   }
 }
 
@@ -79,7 +79,7 @@ async function getClienteByNomeCompleto(req, res) {
   try {
     const match = nome.replace(/_/gm, ' ');
     if (!match) {
-      res.status(400).send('Requisição inválida no parâmetro "nome".');
+      return res.status(400).send({ errorMessage: "Requisição inválida no parâmetro 'nome'." });
     }
 
     res.status(200).send(await clienteRepository.getCollection().find({
@@ -88,7 +88,7 @@ async function getClienteByNomeCompleto(req, res) {
       }
     }).limit(100).toArray());
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(400).send({ errorMessage: error.message });
   }
 }
 
@@ -96,7 +96,7 @@ async function getClienteById(req, res) {
   const id = req.query.id;
   try {
     if (!id) {
-      res.status(400).send('Requisição inválida no parâmetro "id".');
+      res.status(400).send({ errorMessage: "Requisição inválida no parâmetro 'id'." });
       return;
     }
 
@@ -104,13 +104,13 @@ async function getClienteById(req, res) {
       _id: new ObjectId(id)
     });
     if (!result) {
-      res.status(404).send('Cliente não encontrado(a)');
+      res.status(404).send({ errorMessage: 'Cliente não encontrado(a)' });
       return;
     }
 
     res.status(200).send(result);
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(400).send({ errorMessage: error.message });
   }
 }
 
@@ -118,7 +118,7 @@ async function removeCliente(req, res) {
   const id = req.query.id;
   try {
     if (!id) {
-      res.status(400).send('Requisição inválida no parâmetro "id".');
+      res.status(400).send({ errorMessage: "Requisição inválida no parâmetro 'id'." });
       return;
     }
 
@@ -126,7 +126,7 @@ async function removeCliente(req, res) {
       _id: new ObjectId(id)
     });
     if (!existingCliente) {
-      res.status(404).send('Cliente não encontrado(a)');
+      res.status(404).send({ errorMessage: 'Cliente não encontrado(a)' });
       return;
     }
 
@@ -145,11 +145,11 @@ async function renameCliente(req, res) {
   const novo_nome_completo = req.query.novo_nome_completo;
   try {
     if (!id) {
-      res.status(400).send('Requisição inválida no parâmetro "id".');
+      return res.status(400).send({ errorMessage: "Requisição inválida no parâmetro 'id'." });
     }
 
     if (!novo_nome_completo) {
-      res.status(400).send('Requisição inválida no parâmetro "novo_nome_completo".');
+      return res.status(400).send({ errorMessage: 'Requisição inválida no parâmetro "novo_nome_completo".' });
     }
 
     const result = await clienteRepository.updateOne({
@@ -158,9 +158,9 @@ async function renameCliente(req, res) {
       $set: { nomeCompleto: novo_nome_completo }
     });
 
-    res.status(result.code).send(result.message);
+    res.status(result.code).send({ message: result.message });
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(400).send({ errorMessage: error.message });
   }
 }
 

@@ -15,6 +15,7 @@ cidadeController.get(`/cidade`, (req, res, next) => {
   if (estado) {
     return getCidadeByEstado(req, res);
   }
+
   next();
 });
 
@@ -23,9 +24,10 @@ cidadeController.post('/cidade/cadastrar', (req, res) => createCidade(req, res))
 
 async function getCidadeByNome(req, res) {
   const nome = req.query.nome;
-  const match = nome?.replace(/_/gm, ' ');
+  const match = nome?.replace(/_/gm, ' ').match(/^([a-z A-ZÀ-ž]{2,100}$)/)?.[1];
+  console.log(match);
   if (!match) {
-    res.status(400).send('Requisição inválida no parâmetro "nome".');
+    return res.status(400).send({ errorMessage: "Requisição inválida no parâmetro 'nome'." });
   }
 
   res.status(200).send(await repository.getCollection().find({
@@ -35,9 +37,9 @@ async function getCidadeByNome(req, res) {
 
 async function getCidadeByEstado(req, res) {
   const estado = req.query.estado;
-  const match = estado.replace(/_/gm, ' ');
+  const match = estado.replace(/_/gm, ' ').match(/^([a-zA-Z]{2}$)/)?.[1];
   if (!match) {
-    res.status(400).send('Requisição inválida no parâmetro "estado".');
+    return res.status(400).send({ errorMessage: "Requisição inválida no parâmetro 'estado'." });
   }
 
   res.status(200).send(await repository.getCollection().find({
@@ -54,9 +56,12 @@ async function createCidade(req, res) {
   entity.estado = Estado[estado];
   try {
     await repository.create(entity);
-    res.status(200).send('Cidade cadastrada com sucesso.');
+    res.status(200).send({ message: 'Cidade cadastrada com sucesso.' });
   } catch (error) {
-    res.status(400).send(`Erro ao cadastrar a cidade :: ${error.message}`);
+    if (/duplicate key/.test(error.message)) {
+      return res.status(400).send({ errorMessage: 'Erro ao cadastrar a cidade. Cidade já cadastrada.' });
+    }
+    res.status(400).send({ errorMessage: 'Erro ao cadastrar a cidade', error: error });
   }
 }
 

@@ -25,7 +25,7 @@ app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.use(controllerRouter);
 
-app.use((req, res) => res.status(404).send('Operação não suportada'));
+app.use((req, res) => res.status(404).send({ errorMessage: 'Operação não suportada' }));
 app.listen(port , () => {
   console.log(`
   App :: rodando em http://localhost:${port}
