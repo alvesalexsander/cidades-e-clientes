@@ -22,6 +22,7 @@ app.use(morgan('combined'));
 app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 /* app.use(jwtMiddleware); */
+
 app.use(controllerRouter);
 
 app.use((req, res) => res.status(404).send('Operação não suportada'));
