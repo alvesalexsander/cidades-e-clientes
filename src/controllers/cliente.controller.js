@@ -7,8 +7,6 @@ const { ObjectId } = require('mongodb');
 const { DateTime } = require('luxon');
 
 class ClienteController extends Controller {
-  static endpoint = '/cliente';
-
   #clienteRepository = new ClientesRepository();
   #cidadeRepository = new CidadesRepository();
 

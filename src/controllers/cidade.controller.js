@@ -4,8 +4,6 @@ const { Cidade } = require('../models/cidade.model');
 const { Estado } = require('../enums/estado.enum');
 
 class CidadeController extends Controller {
-  static endpoint = '/cidade';
-
   #repository = new CidadesRepository();
 
   routes = [

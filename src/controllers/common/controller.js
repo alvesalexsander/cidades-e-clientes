@@ -1,5 +1,4 @@
 class Controller {
-  static endpoint;
   routes = [];
 
   handle(req, res, next) {
