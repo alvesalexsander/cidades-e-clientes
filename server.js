@@ -20,9 +20,9 @@ app.use(morgan('combined'));
 
 if (process.env.ENV_NAME === 'heroku') {
   app.use('/doc', swaggerUi.serve, swaggerUi.setup(require('./swagger-output-heroku.json')));
-  console.log(`Swagger UI :: disponível em https://cidades-e-clientes.herokuapp.com/doc.`)
+  console.log(`Swagger UI :: disponível em https://cidades-e-clientes.herokuapp.com/doc`)
 } else if (process.env.ENV_NAME === 'local') {
-  console.log(`Swagger UI :: disponível em http://localhost:${port}/doc.`);
+  console.log(`Swagger UI :: disponível em http://localhost:${port}/doc`);
   app.use('/doc', swaggerUi.serve, swaggerUi.setup(require('./swagger-output-local.json')));
 }
 

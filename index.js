@@ -1,3 +1,4 @@
+require('./elastic');
 require('dotenv').config();
 
 const { initDatasources, closeDatasources } = require('./src/datasources');
