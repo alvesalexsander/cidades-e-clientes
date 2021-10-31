@@ -28,14 +28,26 @@
             "name": "estado",
             "in": "query",
             "type": "string"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "example": "any"
+                },
+                "estado": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -46,17 +58,24 @@
         "description": "",
         "parameters": [
           {
-            "name": "nome",
-            "in": "query",
-            "type": "string"
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "example": "any"
+                },
+                "estado": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -67,17 +86,35 @@
         "description": "",
         "parameters": [
           {
-            "name": "nome",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "id",
-            "in": "query",
-            "type": "string"
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nomeCompleto": {
+                  "example": "any"
+                },
+                "sexo": {
+                  "example": "any"
+                },
+                "dataNascimento": {
+                  "example": "any"
+                },
+                "cidade": {
+                  "example": "any"
+                },
+                "estado": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
-        "responses": {}
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
       }
     },
     "/cliente": {
@@ -106,6 +143,11 @@
             "name": "id",
             "in": "query",
             "type": "string"
+          },
+          {
+            "name": "novo_nome_completo",
+            "in": "query",
+            "type": "string"
           }
         ],
         "responses": {}
@@ -116,6 +158,11 @@
         "parameters": [
           {
             "name": "id",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "novo_nome_completo",
             "in": "query",
             "type": "string"
           },

@@ -49,7 +49,7 @@ class MongoRepository extends Repository {
 
     const result = await this.#collection.updateOne(query, update);
     if (!result.acknowledged) {
-      throw new Error(`Ocorreu um erro ao tentar executar a operação.`)
+      throw new Error({ errorMessage: `Ocorreu um erro ao tentar executar a operação.` });
     }
     
     if (result.modifiedCount) {
@@ -62,11 +62,11 @@ class MongoRepository extends Repository {
   async delete(query = {}) {
     const result = await this.#collection.delete(query);
     if (!result.acknowledged) {
-      throw new Error(`Ocorreu um erro ao tentar executar a operação.`)
+      throw new Error({ errorMessage: `Ocorreu um erro ao tentar executar a operação.` });
     }
     
     if (result.deletedCount) {
-      return { code: 200, message: `${result.deletedCount} registro(s) removido(s) com sucesso.` }
+      return { code: 200, message: `${result.deletedCount} registro(s) removido(s) com sucesso.` };
     }
 
     return { code: 202, message: 'Nenhum registro removido.' };
@@ -75,11 +75,11 @@ class MongoRepository extends Repository {
   async deleteOne(query = {}) {
     const result = await this.#collection.deleteOne(query);
     if (!result.acknowledged) {
-      throw new Error(`Ocorreu um erro ao tentar executar a operação.`)
+      throw new Error({ errorMessage: `Ocorreu um erro ao tentar executar a operação.` });
     }
     
     if (result.deletedCount) {
-      return { code: 200, message: 'Registro removido com sucesso.' }
+      return { code: 200, message: 'Registro removido com sucesso.' };
     }
 
     return { code: 202, message: 'Nenhum registro removido.' };
