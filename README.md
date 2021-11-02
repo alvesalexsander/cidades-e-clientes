@@ -1,6 +1,6 @@
 # Cidades e Clientes API 
 
-## Web API construída com nodeJS para cadastro de Cidades e Clientes.
+## Web API construída com Node.js para cadastro de Cidades e Clientes.
 ##### Desenvolvido por: Alexsander Apulinario Martins Alves.
 ---
 
